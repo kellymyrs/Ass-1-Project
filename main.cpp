@@ -1,20 +1,4 @@
-#include <iostream> 
-#include <vector> 
-#include <fstream>
-#include <cstring>
-#include <cstdlib> 
-#include <cstdio> 
-#include <sstream>      
-#include <string>
-#include "lsh.h"
-#include <random>
-
-using namespace std; 
-
-struct Item {
-	int id;
-	vector<int> coordinates;
-};
+#include "Item.h"
 
 int main(int argc,char* argv[]){
 	ifstream input_file, query_file;
@@ -22,8 +6,10 @@ int main(int argc,char* argv[]){
 	int i,k = 4 ,L = 5, N,d; // N = number of items(lines) in the file, d = number of coordinates (dimension)
 	char* com;
 	string line,temp_str;
-	Item* item;
-	vector<Item> items;
+	int ident;
+	vector<struct Item <int>*> items;
+	vector<int> c;
+	struct Item <int>* item;
 
 	//using command line
 	for( i = 1 ; i < argc - 1 ; i++) {
@@ -50,21 +36,21 @@ int main(int argc,char* argv[]){
 		cin >> com;           //get the input file
 		input_file.open(com); //open the input file
 	}
-	
+
 	//create the table items[] with the coordinates we get from the file
     i = 1;	
 	while(getline(input_file,line)) { 	
-		item = new Item;
-		item->id = i;
+		ident = i;
 		
         istringstream curr_line(line);
         d = 0; 
         while (getline(curr_line, temp_str, ' ')) {
-            item->coordinates.push_back(atoi(temp_str.c_str()));
+            c.push_back(atoi(temp_str.c_str()));
             d++;
 		}
-		items.push_back(*item);
-		delete item;
+		item = new struct Item<int>(ident , c);
+		items.push_back(item);
+		c.clear();
 		i++;
     }
     N = i-1;
@@ -72,14 +58,22 @@ int main(int argc,char* argv[]){
 	//print items
 	for ( i = 0 ; i < N ; i++  ){
 		cout << "Vector elements are: "; 
-		for (vector<int>::const_iterator j = items[i].coordinates.begin(); j != items[i].coordinates.end(); ++j) 
+		for (vector<int>::const_iterator j = items[i]->coordinates.begin(); j != items[i]->coordinates.end(); ++j) 
 		    cout << *j << " "; 
 		cout << endl;
 	}
 
+	//destroy items
+	cout << "Destroying array items "<< endl; 
+	for ( i = 0 ; i < N ; i++  ){
+		cout << "Destroying item" << i << endl;
+		delete items[i];
+	}
+	items.clear();
+	
     cout << "Do you want to repeat search ? " << endl ;
     cin >> com;
-    if(strcmp(com,"yes")==0){
+    if(strcmp(com, "yes")  ==0){
     	cout << "WAIT" << endl;
     }
     else
@@ -90,6 +84,5 @@ int main(int argc,char* argv[]){
     input_file.close();
     query_file.close();
     output_file.close();
-
     return 0;
 }
