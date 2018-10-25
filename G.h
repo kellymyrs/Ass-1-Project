@@ -1,5 +1,5 @@
-#ifndef ITEM
-#define ITEM
+#ifndef G_F
+#define G_F
 #define W 4
 #include <iostream> 
 #include <vector> 
@@ -12,23 +12,18 @@
 #include <random>
 #include <cstdint>
 #include <time.h> 
+#include "Hash_Function.h"
 
 using namespace std;
 
-template <typename T>
-struct Item{
-	int id;
-	vector <T> coordinates;
-	Item(int i,vector<T>& c){
-		id = i;
-		coordinates = c;
-	}	
-	~Item(){
-		coordinates.clear();
-	}
-	int Distance(vector<int>& c){
-		
-	}
+class G{
+	private :
+		vector<Hash_Function*> g;
+	public :
+		G(int& k,int& d);
+		~G();
+		int64_t g_f_function(vector <int>& p,uint32_t& t_size);
+		//void Calculate_G(vector<int>& c,vector<int64_t>& g_m);
 };
 
 #endif

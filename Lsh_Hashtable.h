@@ -1,10 +1,30 @@
-class Hashtable{
-	private :
-		unordered_map<Item*> hashtable;
-}
+#ifndef L_H
+#define L_H
+#define W 4
+#include <iostream> 
+#include <vector> 
+#include <fstream>
+#include <cstring>
+#include <cstdlib> 
+#include <cstdio> 
+#include <sstream>      
+#include <string>
+#include <random>
+#include <unordered_map>
+#include <cstdint>
+#include <time.h>
+#include "Hashtable.h" 
+
+using namespace std;
 
 class Lsh_Hashtable {
 	private :
 		vector<Hashtable*> lsh_hashtable;
-}
-		
+	public :
+		Lsh_Hashtable(int& k,int& d,int& L);
+		~Lsh_Hashtable();
+		void Insert_Lsh_Hashtable(struct Item<int>* item,int& k,int& d,uint32_t& t_size,int& L);
+		//void Search_Lsh(vector<int>& c,int& k,int& d,int& L,vector<struct Item<int>*>& results);
+};
+
+#endif
