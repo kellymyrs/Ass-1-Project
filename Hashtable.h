@@ -25,7 +25,7 @@ class Hash_Member{
 	public:
 		Hash_Member(G* g_f,Item<int>* it);
 		~Hash_Member();
-		//Combine(vector<int>& c,G *g_h);
+		struct Item<int>* Combine(vector<int>& c,G *g_h,double& temp_dist);
 };
 
 class Hashtable{
@@ -35,8 +35,8 @@ class Hashtable{
 	public : 
 		Hashtable(int& k,int& d);
 		~Hashtable();
-		void Insert_Hashtable(struct Item<int>* item,int& k,int& d,uint32_t& t_size);
-		//void Search_Hashtable(vector<int>& c,int& k,int& d,vector<struct Item<int>*>& results);
+		void Insert_Hashtable(struct Item<int>* item,uint32_t& t_size);
+		void Search_Hashtable(vector<int>& c,uint32_t t_size,struct Item<int>* min_item,double& dist);
 };
 
 #endif

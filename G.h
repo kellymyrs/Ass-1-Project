@@ -23,7 +23,7 @@ class G{
 		G(int& k,int& d);
 		~G();
 		int64_t g_f_function(vector <int>& p,uint32_t& t_size);
-		//void Calculate_G(vector<int>& c,vector<int64_t>& g_m);
+		void Calculate_G(vector<int>& c,vector<int64_t>& g_numbers);
 };
 
 #endif

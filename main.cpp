@@ -5,13 +5,13 @@
 int main(int argc,char* argv[]){
 	ifstream input_file, query_file;
 	ofstream output_file;
-	int i,k = 4 ,L = 5, N,d; // N = number of items(lines) in the file, d = number of coordinates (dimension)
+	int i,j,k = 4 ,L = 5, N,d; // N = number of items(lines) in the file, d = number of coordinates (dimension)
 	char* com;
 	string line,temp_str;
 	int ident;
-	vector<struct Item <int>*> items,results;
+	vector<struct Item <int>*> items;
 	vector<int> c; //coordinates
-	struct Item <int>* item;
+	struct Item <int>* item,* result = NULL;
 
 	srand (time(NULL));
 
@@ -83,7 +83,7 @@ int main(int argc,char* argv[]){
     //Create Lsh_Hashtable
     Lsh_Hashtable* h = new Lsh_Hashtable(k,d,L);
     for (int i = 0; i < N; ++i){
-    	h->Insert_Lsh_Hashtable(items[i],k,d,t_size,L);
+    	h->Insert_Lsh_Hashtable(items[i],t_size,L);
     }
 
 	//read from prompt
@@ -101,14 +101,24 @@ int main(int argc,char* argv[]){
         while (getline(curr_line, temp_str, ' ')) {
             c.push_back(atoi(temp_str.c_str()));
 		}
-		for(int j = 0 ; j < d-1 ; j++ ){
+
+		for(j = 0 ; j < d-1 ; j++ ){
 			cout << c[j] << " " ;
 		}
 		cout << endl;
-		//h->Search_Lsh( c,k,d,L,results);
+
+		//find nearest neighbor
+		h->Search_Lsh(c,L,t_size,result);
+		cout << "Search OK!!!" << endl;
+		if(result != NULL){ 
+			cout << "Result!!" << endl;
+			for (j = 0; j < d-1 ; ++j) 
+				    cout << result->coordinates[j] << " "; 
+			cout << endl;
+		}
+
 		c.clear();
 		i++;
-		//break;
     }
     int Q = i-1; //number of queries
 	
@@ -116,8 +126,10 @@ int main(int argc,char* argv[]){
 	//print items
 	//for ( i = 0 ; i < N ; i++  ){
 	//	cout << "Items' elements are: "; 
-	//	for (vector<int>::const_iterator j = items[i]->coordinates.begin(); j != items[i]->coordinates.end(); ++j) 
-	//	    cout << *j << " "; 
+	//if(result != NULL){
+	//	for (vector<int>::const_iterator j = result->coordinates.begin(); j != result->coordinates.end(); ++j) 
+	//		    cout << *j << " "; 
+	//}
 	//	cout << endl;
 	//}
 

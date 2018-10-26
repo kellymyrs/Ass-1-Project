@@ -21,9 +21,28 @@ Lsh_Hashtable::~Lsh_Hashtable(){
 		
 }
 
-void Lsh_Hashtable::Insert_Lsh_Hashtable(struct Item<int>* item,int& k,int& d,uint32_t& t_size,int& L){
+void Lsh_Hashtable::Insert_Lsh_Hashtable(struct Item<int>* item,uint32_t& t_size,int& L){
 	// for loop for every hashtable
 	for ( int i = 0; i < L; ++i ){
-		lsh_hashtable[i]->Insert_Hashtable(item,k,d,t_size);
+		lsh_hashtable[i]->Insert_Hashtable(item,t_size);
 	}
+}
+
+void Lsh_Hashtable::Search_Lsh(vector<int>& c,int& L,uint32_t t_size,struct Item<int>* result){
+	//loop for every hashtable
+	double dist = 10000000;
+	struct Item<int>* min_item; //item with minimum distance for every hashtable
+	double min_dist = 100000000;
+
+	cout << "Searching Lsh_Hashtable !" << endl;
+	for (int i = 0 ; i < L ; ++i ){
+		lsh_hashtable[i]->Search_Hashtable(c,t_size,min_item,dist);
+		if (dist < min_dist){
+			cout << "Change min !!" << endl;
+			min_dist = dist;
+			result = min_item;
+		}
+
+	}
+
 }

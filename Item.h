@@ -12,6 +12,7 @@
 #include <random>
 #include <cstdint>
 #include <time.h> 
+#include <math.h>
 
 using namespace std;
 
@@ -26,8 +27,15 @@ struct Item{
 	~Item(){
 		coordinates.clear();
 	}
-	int Distance(vector<int>& c){
-		
+	void Distance(vector<T>& c,double& temp_dist){
+		int temp = 0;
+		cout << "Item coordinates : ";
+		for (int i = 0; i < coordinates.size() ; ++i){
+			temp += (coordinates[i] - c[i])*(coordinates[i] - c[i]) ;
+			cout << coordinates[i] << " " ;
+		}
+		cout << endl;
+		temp_dist = sqrt(temp);
 	}
 };
 
