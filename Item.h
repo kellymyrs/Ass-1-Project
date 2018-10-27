@@ -29,14 +29,16 @@ struct Item{
 	}
 	void Distance(vector<T>& c,double& temp_dist){
 		int temp = 0;
-		cout << "Item coordinates : ";
+		//cout << "Item coordinates : ";
 		for (int i = 0; i < coordinates.size() ; ++i){
 			temp += (coordinates[i] - c[i])*(coordinates[i] - c[i]) ;
-			cout << coordinates[i] << " " ;
+		//	cout << coordinates[i] << " " ;
 		}
-		cout << endl;
 		temp_dist = sqrt(temp);
+		//cout << " ********************************sqrt--->" << temp_dist << "\n";
+		//cout << endl;
 	}
+
 };
 
 #endif

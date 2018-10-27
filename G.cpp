@@ -43,15 +43,16 @@ int64_t G::g_f_function(vector <int>& p,uint32_t& t_size){
 	return f;
 }
 
-//void G::Calculate_G(vector<int>& c,vector<int64_t>& g_m){
-//int64_t h;
+void G::Calculate_G(vector<int>& c,vector<int64_t>& g_m){
+	int64_t h;
 
-//vector<Hash_Function*>::iterator it;
-//cout << "Calculating G" << endl;
-//for ( it = g.begin() ; it != g.end() ; ++it ){
+	vector<Hash_Function*>::iterator it;
+	cout << "Calculating G" << endl;
+	for ( it = g.begin() ; it != g.end() ; ++it ){
 	
-//	h = (*it)->g_h_function(c);
+		h = (*it)->g_h_function(c);
 	
-//	g_m.push_back(h);	
-//}
-//}
+		g_m.push_back(h);	
+	
+	}
+}

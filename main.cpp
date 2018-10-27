@@ -2,6 +2,14 @@
 #include "G.h"
 #include "Lsh_Hashtable.h"
 
+
+bool is_number(const std::string& s)
+{
+    std::string::const_iterator it = s.begin();
+    while (it != s.end() && std::isdigit(*it)) ++it;
+    return !s.empty() && it == s.end();
+}
+
 int main(int argc,char* argv[]){
 	ifstream input_file, query_file;
 	ofstream output_file;
@@ -12,6 +20,7 @@ int main(int argc,char* argv[]){
 	vector<struct Item <int>*> items;
 	vector<int> c; //coordinates
 	struct Item <int>* item,* result = NULL;
+	double min_dist;
 
 	srand (time(NULL));
 
@@ -49,9 +58,15 @@ int main(int argc,char* argv[]){
         istringstream curr_line(line);
         d = 0; 
         while (getline(curr_line, temp_str, ' ')) {
+        	
+        	if(is_number(temp_str) == false) {
+        		continue;
+        	}
+
             c.push_back(atoi(temp_str.c_str()));
             d++;
 		}
+
 		item = new struct Item<int>(ident , c);
 		items.push_back(item);
 		c.clear();
@@ -93,6 +108,18 @@ int main(int argc,char* argv[]){
 		query_file.open(com); //open the input file
 	}
 
+	//read from prompt
+	if(!output_file.is_open()){ 
+		cout << "Please enter an output_file file !" << endl ;
+		cin >> com;           //get the output file
+		output_file.open(com); //open the output file
+	}
+
+	cout << "Please enter radious !" << endl ;
+	cin >> com;           //get radious
+	int R = atoi(com);
+
+
     //Find queries
     i = 1;	
 	while(getline(query_file,line)) { 	
@@ -102,25 +129,31 @@ int main(int argc,char* argv[]){
             c.push_back(atoi(temp_str.c_str()));
 		}
 
+		output_file << "Query number " << i <<  ": ";
 		for(j = 0 ; j < d-1 ; j++ ){
-			cout << c[j] << " " ;
+			output_file << c[j] << " " ;
 		}
-		cout << endl;
+		output_file << endl;
 
 		//find nearest neighbor
-		h->Search_Lsh(c,L,t_size,result);
+		result = h->NN_Lsh(c,L,t_size,min_dist);
 		cout << "Search OK!!!" << endl;
 		if(result != NULL){ 
 			cout << "Result!!" << endl;
+			//write on the file
+			output_file << "Nearest neighbor : " << result->id << " ";
 			for (j = 0; j < d-1 ; ++j) 
-				    cout << result->coordinates[j] << " "; 
-			cout << endl;
+				    output_file << result->coordinates[j] << " "; 
+			output_file << endl;
+			output_file << "distanceLSH : "<< min_dist << endl;
 		}
 
 		c.clear();
+		//break;
 		i++;
     }
-    int Q = i-1; //number of queries
+    
+
 	
 
 	//print items

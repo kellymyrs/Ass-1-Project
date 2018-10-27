@@ -45,29 +45,29 @@ void Hashtable::Insert_Hashtable(struct Item<int>* it,uint32_t& t_size){
 	hashtable[f].push_back(h_member);
 }
 
-void Hashtable::Search_Hashtable(vector<int>& c,uint32_t t_size,struct Item<int>* min_item,double& dist){
+struct Item<int>* Hashtable::NN_Hashtable(vector<int>& c,uint32_t t_size,double& dist){
 	double temp_dist;
 
 	cout << endl << endl << "Searching Hashtable" << endl;
 	int64_t f = g_h->g_f_function(c,t_size); //calculate f
 	cout << "f = " << f << endl;
-	struct Item <int>* temp_item;
+	struct Item <int>* temp_item = NULL ,* min_item = NULL;
 
 	//search bucket
 	auto search = hashtable.find(f);	
 	if(search != hashtable.end()){
+		
 		cout << "Searching bucket" << endl;
-		for (int i = 0; i < search->second.size(); ++i){
+		for (int i = 0; i < search->second.size(); i++){
 			
 			cout << "Combining" << endl;
 			temp_item = search->second[i]->Combine(c,g_h,temp_dist);
-		
-			cout << "Temp Item coordinates : ";
-			int temp = 0;
-			for (int j = 0; j < temp_item->coordinates.size() ; ++j){
-				cout << temp_item->coordinates[i] << " " ;
-			}
-			cout << endl;
+
+			//cout << "Temp Item coordinates : ";
+			//for (int j = 0; j < temp_item->coordinates.size() ; j++){
+			//	cout << temp_item->coordinates[j] << " " ;
+			//}
+			//cout << endl;
 
 			cout <<"Found distance : "<< temp_dist << endl;
 			cout <<"Min distance : "<< dist << endl;
@@ -75,47 +75,57 @@ void Hashtable::Search_Hashtable(vector<int>& c,uint32_t t_size,struct Item<int>
 				cout << "Change minimum" << endl;
 				dist = temp_dist;
 				min_item = temp_item;
+
+				cout << "Min Item coordinates : ";
+				for (int j = 0; j < min_item->coordinates.size() ; j++){
+					cout << min_item->coordinates[j] << " " ;
+				}
+				cout << endl;
 			}
 		}
+		return min_item;
 	}
 	else{
 		cout << "Empty bucket" << endl;
+		return NULL;
 	}
 }
 
 struct Item<int>* Hash_Member::Combine(vector<int>& c,G *g_h,double& temp_dist){
 	int flag = 1; //checks if the two G functions are equal
 
-	//g_m->Calculate_G(c,g_h); //calculate hash memeber G
-	//g_h->Calculate_G(c,g_t); //calculate hashtable G
+	vector<int64_t> g_b,g_t;
+
+	g_m->Calculate_G(c,g_b); //calculate hash memeber G
+	g_h->Calculate_G(c,g_t); //calculate hashtable G
 
 	//combine hash member G and hashtable G
-	//vector<int64_t>::iterator itv = g_h.begin();
-	//for (vector<int64_t>::iterator it = g_t.begin(); it != g_t.end(); ++it){
+	vector<int64_t>::iterator itv = g_b.begin();
+	for (vector<int64_t>::iterator it = g_t.begin(); it != g_t.end(); ++it){
 
-	//	cout << "Hash memeber G = " << *itv << endl;
-	//	cout << "Hashtable G = " << *it << endl;
+		//cout << "Hash member G = " << *itv << ' ';
+		//cout << "Hashtable G = " << *it << endl;
 		
-	//	if(*itv != *it){ //case the two function aren't equal
-	//		temp_dist = 100000000;
-	//		flag = 0;
-	//		break;
-	//	}
+		if(*itv != *it){ //case the two functions aren't equal
+			flag = 0;
+			break;
+		}
 		
-	//	++itv;
-	//}
+		++itv;
+	}
 
 	//calculate distance
 	if(flag){
 		item->Distance(c,temp_dist);
-		return item;
 
-		//cout << "Temp Item coordinates : ";
+		//cout << "Temp Item coordinates IN THE FOR : ";
 		//int temp = 0;
-		//for (int i = 0; i < temp_item->coordinates.size() ; ++i){
-		//	cout << temp_item->coordinates[i] << " " ;
+		//for (int i = 0; i < item->coordinates.size() ; ++i){
+		//	cout << item->coordinates[i] << " " ;
 		//}
 		//cout << endl;
+		
+		return item;
 	}
 
 }

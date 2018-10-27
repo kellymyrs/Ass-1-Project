@@ -24,7 +24,7 @@ class Lsh_Hashtable {
 		Lsh_Hashtable(int& k,int& d,int& L);
 		~Lsh_Hashtable();
 		void Insert_Lsh_Hashtable(struct Item<int>* item,uint32_t& t_size,int& L);
-		void Search_Lsh(vector<int>& c,int& L,uint32_t t_size,struct Item<int>* result);
+		struct Item<int>* NN_Lsh(vector<int>& c,int& L,uint32_t t_size,double& min_dist);
 };
 
 #endif

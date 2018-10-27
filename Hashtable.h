@@ -1,6 +1,5 @@
 #ifndef HT
 #define HT
-#define W 4
 #include <iostream> 
 #include <vector> 
 #include <fstream>
@@ -16,13 +15,17 @@
 #include "G.h"
 #include "Item.h"
 
+#define W 4
+
 using namespace std;
 
 class Hash_Member{
 	private :
-		Item<int>* item;
+		struct Item<int>* item;
 		G* g_m;
 	public:
+		struct Item<int> * get_item() { return item; }
+
 		Hash_Member(G* g_f,Item<int>* it);
 		~Hash_Member();
 		struct Item<int>* Combine(vector<int>& c,G *g_h,double& temp_dist);
@@ -36,7 +39,7 @@ class Hashtable{
 		Hashtable(int& k,int& d);
 		~Hashtable();
 		void Insert_Hashtable(struct Item<int>* item,uint32_t& t_size);
-		void Search_Hashtable(vector<int>& c,uint32_t t_size,struct Item<int>* min_item,double& dist);
+		struct Item<int>* NN_Hashtable(vector<int>& c,uint32_t t_size,double& dist);
 };
 
 #endif

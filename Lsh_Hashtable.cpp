@@ -28,21 +28,39 @@ void Lsh_Hashtable::Insert_Lsh_Hashtable(struct Item<int>* item,uint32_t& t_size
 	}
 }
 
-void Lsh_Hashtable::Search_Lsh(vector<int>& c,int& L,uint32_t t_size,struct Item<int>* result){
+struct Item<int>* Lsh_Hashtable::NN_Lsh(vector<int>& c,int& L,uint32_t t_size,double& min_dist){
 	//loop for every hashtable
-	double dist = 10000000;
+	double dist = min_dist = 10000000;
 	struct Item<int>* min_item; //item with minimum distance for every hashtable
-	double min_dist = 100000000;
+	struct Item<int>* result;
 
-	cout << "Searching Lsh_Hashtable !" << endl;
-	for (int i = 0 ; i < L ; ++i ){
-		lsh_hashtable[i]->Search_Hashtable(c,t_size,min_item,dist);
+
+	cout << endl << endl << "Searching Lsh_Hashtable !" << endl;
+	for (int i = 0 ; i < L ; i++){
+		min_item = lsh_hashtable[i]->NN_Hashtable(c,t_size,dist);
+
+		
+		if( min_item != NULL){
+			cout << "Min Item distance Lsh : " << dist << endl ;
+			cout << "Min Item coordinates Lsh : ";
+			for (int j = 0; j < min_item->coordinates.size() ; j++){
+				cout << min_item->coordinates[j] << " " ;
+			}	
+			cout << endl;
+
+		}
+		
 		if (dist < min_dist){
-			cout << "Change min !!" << endl;
+			cout << "Change Result !!" << endl;
 			min_dist = dist;
 			result = min_item;
+			//for (int j = 0; j < result->coordinates.size() ; j++){
+			//	cout << result->coordinates[j] << " " ;
+			//}	
+			//cout << endl;
 		}
 
 	}
+	return result;
 
 }
