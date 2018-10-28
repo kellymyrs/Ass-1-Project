@@ -1,21 +1,21 @@
 #ifndef HT
 #define HT
-#include <iostream> 
-#include <vector> 
+#include <iostream>
+#include <vector>
 #include <fstream>
 #include <cstring>
-#include <cstdlib> 
-#include <cstdio> 
-#include <sstream>      
+#include <cstdlib>
+#include <cstdio>
+#include <sstream>
 #include <string>
 #include <random>
 #include <unordered_map>
 #include <cstdint>
-#include <time.h> 
+#include <time.h>
 #include "G.h"
 #include "Item.h"
 
-#define W 4
+#define W 400
 
 using namespace std;
 
@@ -35,11 +35,12 @@ class Hashtable{
 	private :
 		G* g_h;
 		unordered_map<int,vector <Hash_Member*>> hashtable;
-	public : 
+	public :
 		Hashtable(int& k,int& d);
 		~Hashtable();
 		void Insert_Hashtable(struct Item<int>* item,uint32_t& t_size);
-		struct Item<int>* NN_Hashtable(vector<int>& c,uint32_t t_size,double& dist);
+		struct Item<int>* NN_Hashtable(vector<int>& c,uint32_t& t_size,double& dist);
+		void Range_Hashtable(vector<int>& c,uint32_t& t_size,double& R,vector<struct Item <int>*>& range);
 };
 
 #endif

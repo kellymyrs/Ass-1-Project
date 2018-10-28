@@ -1,24 +1,26 @@
 #ifndef G_F
 #define G_F
-#define W 4
-#include <iostream> 
-#include <vector> 
+#include <iostream>
+#include <vector>
 #include <fstream>
 #include <cstring>
-#include <cstdlib> 
-#include <cstdio> 
-#include <sstream>      
+#include <cstdlib>
+#include <cstdio>
+#include <sstream>
 #include <string>
 #include <random>
 #include <cstdint>
-#include <time.h> 
+#include <time.h>
 #include "Hash_Function.h"
+
+#define W 400
 
 using namespace std;
 
 class G{
 	private :
 		vector<Hash_Function*> g;
+		int64_t r;
 	public :
 		G(int& k,int& d);
 		~G();

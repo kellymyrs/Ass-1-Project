@@ -1,19 +1,20 @@
 #ifndef H_F
 #define H_F
-#define W 4
-#include <iostream> 
-#include <vector> 
+#include <iostream>
+#include <vector>
 #include <fstream>
 #include <cstring>
-#include <cstdlib> 
-#include <cstdio> 
-#include <sstream>      
+#include <cstdlib>
+#include <cstdio>
+#include <sstream>
 #include <string>
 #include <random>
 #include <cstdint>
-#include <time.h> 
+#include <time.h>
 
-using namespace std; 
+#define W 400
+
+using namespace std;
 
 class Hash_Function{
 	private :

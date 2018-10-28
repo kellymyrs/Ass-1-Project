@@ -5,6 +5,7 @@ G::G(int& k,int& d){
 	Hash_Function* h;
 
 	//cout << "Creating a G Hash function : " << endl;
+	r = rand() % 10 + 1;
 
 	for (int i = 0; i < k; ++i){
 		h = new Hash_Function(d);
@@ -23,21 +24,19 @@ int64_t G::g_f_function(vector <int>& p,uint32_t& t_size){
 	//cout << "Calculating f!" << endl;
 
 	int64_t f = 0, h;
-	int64_t r = 0;
 	vector<Hash_Function*>::iterator it;
 	for (it = g.begin(); it != g.end(); ++it){
-		r = rand() % 10 + 1;
 		//cout << "In the for loop for every h" << endl;
 		h = (*it)->g_h_function(p);
 		//cout << "OK with the h(p) = " << h << endl;
 		//cout << "OK with the r = " << r << endl;
-		f +=  h * r;	
+		f +=  h * r;
 
 	}
 	//cout << "OK with the sum (h(p) * r)  !" << endl;
 	//cout << "*********************F---->" << f << endl;
 	f = f%t_size;
-	
+
 	if (f < 0) f += t_size;
 	//cout << "*********************F---->" << f << endl;
 	return f;
@@ -47,12 +46,12 @@ void G::Calculate_G(vector<int>& c,vector<int64_t>& g_m){
 	int64_t h;
 
 	vector<Hash_Function*>::iterator it;
-	cout << "Calculating G" << endl;
+	//cout << "Calculating G" << endl;
 	for ( it = g.begin() ; it != g.end() ; ++it ){
-	
+
 		h = (*it)->g_h_function(c);
-	
-		g_m.push_back(h);	
-	
+
+		g_m.push_back(h);
+
 	}
 }

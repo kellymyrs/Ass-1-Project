@@ -1,18 +1,22 @@
 #ifndef ITEM
 #define ITEM
-#define W 4
-#include <iostream> 
-#include <vector> 
+#include <iostream>
+#include <vector>
 #include <fstream>
 #include <cstring>
-#include <cstdlib> 
-#include <cstdio> 
-#include <sstream>      
+#include <cstdlib>
+#include <cstdio>
+#include <sstream>
 #include <string>
 #include <random>
 #include <cstdint>
-#include <time.h> 
+#include <time.h>
 #include <math.h>
+#include <utility>
+#include <cmath>
+#include <unordered_map>
+
+#define W 400
 
 using namespace std;
 
@@ -23,7 +27,7 @@ struct Item{
 	Item(int i,vector<T>& c){
 		id = i;
 		coordinates = c;
-	}	
+	}
 	~Item(){
 		coordinates.clear();
 	}

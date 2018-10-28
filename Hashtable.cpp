@@ -16,7 +16,7 @@ Hashtable::~Hashtable(){
 	cout << "Destroying hashtable"<< endl;
 
 	//delete unordered multimap hashtable
-	if(!hashtable.empty()){ 
+	if(!hashtable.empty()){
 		for ( auto it = hashtable.begin(); it != hashtable.end(); ++it ){
 			for(auto itv = it->second.begin(); itv != it->second.end(); ++itv){
 				delete *itv;
@@ -25,7 +25,7 @@ Hashtable::~Hashtable(){
 	}
 
 	//delete g hash function
-	delete g_h; 
+	delete g_h;
 }
 
 Hash_Member::~Hash_Member(){
@@ -35,7 +35,7 @@ Hash_Member::~Hash_Member(){
 
 void Hashtable::Insert_Hashtable(struct Item<int>* it,uint32_t& t_size){
 
-	//cout << "Creating f function!" << endl;	
+	//cout << "Creating f function!" << endl;
 	int64_t f = g_h->g_f_function(it->coordinates,t_size); //calculate f
 	//cout << "f number is :" << f << endl;
 
@@ -45,22 +45,22 @@ void Hashtable::Insert_Hashtable(struct Item<int>* it,uint32_t& t_size){
 	hashtable[f].push_back(h_member);
 }
 
-struct Item<int>* Hashtable::NN_Hashtable(vector<int>& c,uint32_t t_size,double& dist){
+struct Item<int>* Hashtable::NN_Hashtable(vector<int>& c,uint32_t& t_size,double& dist){
 	double temp_dist;
 
-	cout << endl << endl << "Searching Hashtable" << endl;
+	//cout << endl << endl << "Searching Hashtable" << endl;
 	int64_t f = g_h->g_f_function(c,t_size); //calculate f
 	cout << "f = " << f << endl;
 	struct Item <int>* temp_item = NULL ,* min_item = NULL;
 
 	//search bucket
-	auto search = hashtable.find(f);	
+	auto search = hashtable.find(f);
 	if(search != hashtable.end()){
-		
-		cout << "Searching bucket" << endl;
+
+		//cout << "Searching bucket" << endl;
 		for (int i = 0; i < search->second.size(); i++){
-			
-			cout << "Combining" << endl;
+
+			//cout << "Combining" << endl;
 			temp_item = search->second[i]->Combine(c,g_h,temp_dist);
 
 			//cout << "Temp Item coordinates : ";
@@ -69,18 +69,18 @@ struct Item<int>* Hashtable::NN_Hashtable(vector<int>& c,uint32_t t_size,double&
 			//}
 			//cout << endl;
 
-			cout <<"Found distance : "<< temp_dist << endl;
-			cout <<"Min distance : "<< dist << endl;
+			//cout <<"Found distance : "<< temp_dist << endl;
+			//cout <<"Min distance : "<< dist << endl;
 			if (temp_dist < dist){
-				cout << "Change minimum" << endl;
+				//cout << "Change minimum" << endl;
 				dist = temp_dist;
 				min_item = temp_item;
 
-				cout << "Min Item coordinates : ";
-				for (int j = 0; j < min_item->coordinates.size() ; j++){
-					cout << min_item->coordinates[j] << " " ;
-				}
-				cout << endl;
+				//cout << "Min Item coordinates : ";
+				//for (int j = 0; j < min_item->coordinates.size() ; j++){
+				//	cout << min_item->coordinates[j] << " " ;
+				//}
+				//cout << endl;
 			}
 		}
 		return min_item;
@@ -105,12 +105,12 @@ struct Item<int>* Hash_Member::Combine(vector<int>& c,G *g_h,double& temp_dist){
 
 		//cout << "Hash member G = " << *itv << ' ';
 		//cout << "Hashtable G = " << *it << endl;
-		
+
 		if(*itv != *it){ //case the two functions aren't equal
 			flag = 0;
 			break;
 		}
-		
+
 		++itv;
 	}
 
@@ -124,8 +124,62 @@ struct Item<int>* Hash_Member::Combine(vector<int>& c,G *g_h,double& temp_dist){
 		//	cout << item->coordinates[i] << " " ;
 		//}
 		//cout << endl;
-		
+
 		return item;
 	}
+	else{
+		temp_dist = 10000000;
+		return NULL;
+	}
 
+}
+
+void Hashtable::Range_Hashtable(vector<int>& c,uint32_t& t_size,double& R,vector<struct Item <int>*>& range){
+	struct Item <int>* temp_item = NULL;
+	double temp_dist;
+
+	//cout << endl << endl << "Searching Hashtable" << endl;
+
+	int64_t f = g_h->g_f_function(c,t_size); //calculate f
+	cout << "f = " << f << endl;
+
+
+	//search bucket
+	auto search = hashtable.find(f);
+	if(search != hashtable.end()){
+
+		//cout << "Searching bucket" << endl;
+		for (int i = 0; i < search->second.size(); i++){
+
+			//cout << "Combining" << endl;
+			temp_item = search->second[i]->Combine(c,g_h,temp_dist);
+
+			//cout << "Temp Item coordinates : ";
+			//for (int j = 0; j < temp_item->coordinates.size() ; j++){
+			//	cout << temp_item->coordinates[j] << " " ;
+			 //}
+			//cout << endl;
+
+			//cout <<"Found distance : "<< temp_dist << endl;
+
+			if (temp_dist < R){
+				int flag = 1;
+				//cout << "Adding an item to the range list" << endl;
+				if(!range.empty()){
+					for( int j = 0 ; j < range.size() ; j++){
+						if( range[j]->id == temp_item->id ){
+							flag = 0;
+						}
+					}
+				}
+				if(flag){
+					range.push_back(temp_item);
+				}
+			}
+		}
+	}
+	else{
+		//cout << "Empty bucket" << endl;
+		return;
+	}
 }
