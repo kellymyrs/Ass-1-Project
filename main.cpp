@@ -1,6 +1,7 @@
 #include "Item.h"
 #include "G.h"
 #include "Lsh_Hashtable.h"
+#include "Cosine_Lsh_Hashtable.h"
 
 
 bool is_number(const std::string& s)
@@ -78,6 +79,9 @@ int main(int argc,char* argv[]){
 	vector<int> c; //coordinates
 	struct Item <int>* item,* nn = NULL;
 	double min_dist, R = 0;
+    int metric;
+    Lsh_Hashtable* eu_h;
+    Cosine_Lsh_Hashtable* co_h;
 
 	srand (time(NULL));
 
@@ -124,6 +128,15 @@ int main(int argc,char* argv[]){
         while (getline(curr_line, temp_str, ' ')) {
 
         	if(is_number(temp_str) == false) {
+                if (!temp_str.compare("euclidean")){
+                    metric = 0;
+                }
+                if(!temp_str.compare("cosine")){
+                    metric = 1;
+                }
+                if(temp_str.empty()){
+                    metric = 0;
+                }
         		continue;
         	}
 
@@ -143,106 +156,117 @@ int main(int argc,char* argv[]){
     uint32_t t_size = (uint32_t) floor(N/2);
 
     //Create Lsh_Hashtable
-    Lsh_Hashtable* h = new Lsh_Hashtable(k,d,L);
+    if(metric == 0){
+        eu_h = new Lsh_Hashtable(k,d,L);
+    }
+    else{
+        co_h = new Cosine_Lsh_Hashtable(k,d,L);
+    }
     for (int i = 0; i < N; ++i){
-    	h->Insert_Lsh_Hashtable(items[i],t_size,L);
+        if( metric == 0){
+            eu_h->Insert_Lsh_Hashtable(items[i],t_size,L);
+        }
+    	else{
+            cout << "Inserting" << endl;
+            co_h->Insert_Lsh_Hashtable(items[i],t_size,L);
+        }
     }
 
-	//read from prompt
-	if(!query_file.is_open()){
-		cout << "Please enter a query file !" << endl ;
-		cin >> com;           //get the input file
-		query_file.open(com); //open the input file
-	}
-
-	//modify query file
-	string new_query_file;
-
-	add_id_to_data(query_file,"query", new_query_file);
-
-	ifstream new_q_file(new_query_file);
-
-	//read from prompt
-	if(!output_file.is_open()){
-		cout << "Please enter an output_file file !" << endl ;
-		cin >> com;           //get the output file
-		output_file.open(com); //open the output file
-	}
-
-
-    //Search queries
-    int q = 1;
-	while(getline(new_q_file,line)) {
-
-        istringstream curr_line(line);
-
-	    getline(curr_line, temp_str, ' ');
-
-		// Check radious
-		if (!temp_str.compare("Radius:")) {
-			getline(curr_line, temp_str, ' ');
-			R = atof(temp_str.c_str());
-			continue;
-		}
-		else if(temp_str.empty()) {
-			R = 0;
-			continue;
-		}
-
-		// Move pointer to the coordinates
-		getline(curr_line, temp_str, ' ');
-
-        while (getline(curr_line, temp_str, ' ')) {
-            c.push_back(atoi(temp_str.c_str()));
-		}
-
-		output_file << "Query number " << q <<  ": ";
-		q++;
-
-		for(j = 0 ; j < d ; j++ ){
-			output_file << c[j] << " " ;
-		}
-		output_file << endl;
-
-
-		//Range(r,c)-Neighbor search
-		if( R != 0)
-			h->Range_Lsh(c,L,t_size,R,range);
-
-        //find nearest neighbor
-        nn = h->NN_Lsh(c,L,t_size,min_dist);
-
-        //cout << "Search OK!!!" << endl;
-
-		if(!range.empty()){
-			cout << "Result Range!!" << endl;
-			output_file << "R-near neighbors:  " << endl;
-			for( j = 0 ; j < range.size() ; j++){
-				output_file <<"item_id"<< range[j]->id << " ";
-				for( int k = 0 ; k < d ; k++){
-					output_file << range[j]->coordinates[k] << " ";
-				}
-				output_file << endl;
-			}
-		}
-
-		if(nn != NULL){
-			cout << "Result NN!!" << endl;
-			//write on the file
-			output_file << "Nearest neighbor : " <<"item_id"<< nn->id << " ";
-			//cout << "CORDS SIZE -- > " << nn->coordinates.size() << endl;
-			for (j = 0; j < d ; j++)
-				output_file << nn->coordinates[j] << " ";
-			output_file << endl;
-			output_file << "distanceLSH : "<< min_dist << endl;
-		}
-        cout << endl;
-        range.clear();
-		c.clear();
-		//break;
-    }
-
-    new_q_file.close();
+	// //read from prompt
+	// if(!query_file.is_open()){
+	// 	cout << "Please enter a query file !" << endl ;
+	// 	cin >> com;           //get the input file
+	// 	query_file.open(com); //open the input file
+	// }
+    //
+	// //modify query file
+	// string new_query_file;
+    //
+	// add_id_to_data(query_file,"query", new_query_file);
+    //
+	// ifstream new_q_file(new_query_file);
+    //
+	// //read from prompt
+	// if(!output_file.is_open()){
+	// 	cout << "Please enter an output_file file !" << endl ;
+	// 	cin >> com;           //get the output file
+	// 	output_file.open(com); //open the output file
+	// }
+    //
+    //
+    // //Search queries
+    // int q = 1;
+	// while(getline(new_q_file,line)) {
+    //
+    //     istringstream curr_line(line);
+    //
+	//     getline(curr_line, temp_str, ' ');
+    //
+	// 	// Check radious
+	// 	if (!temp_str.compare("Radius:")) {
+	// 		getline(curr_line, temp_str, ' ');
+	// 		R = atof(temp_str.c_str());
+	// 		continue;
+	// 	}
+	// 	else if(temp_str.empty()) {
+	// 		R = 0;
+	// 		continue;
+	// 	}
+    //
+	// 	// Move pointer to the coordinates
+	// 	getline(curr_line, temp_str, ' ');
+    //
+    //     while (getline(curr_line, temp_str, ' ')) {
+    //         c.push_back(atoi(temp_str.c_str()));
+	// 	}
+    //
+	// 	output_file << "Query number " << q <<  ": ";
+	// 	q++;
+    //
+	// 	for(j = 0 ; j < d ; j++ ){
+	// 		output_file << c[j] << " " ;
+	// 	}
+	// 	output_file << endl;
+    //
+    //
+	// 	//Range(r,c)-Neighbor search
+	// 	if( R != 0)
+	// 		h->Range_Lsh(c,L,t_size,R,range);
+    //
+    //     //find nearest neighbor
+    //     nn = h->NN_Lsh(c,L,t_size,min_dist);
+    //
+    //     //cout << "Search OK!!!" << endl;
+    //
+	// 	if(!range.empty()){
+	// 		cout << "Result Range!!" << endl;
+	// 		output_file << "R-near neighbors:  " << endl;
+	// 		for( j = 0 ; j < range.size() ; j++){
+	// 			output_file <<"item_id"<< range[j]->id << " ";
+	// 			for( int k = 0 ; k < d ; k++){
+	// 				output_file << range[j]->coordinates[k] << " ";
+	// 			}
+	// 			output_file << endl;
+	// 		}
+	// 	}
+    //
+	// 	if(nn != NULL){
+	// 		cout << "Result NN!!" << endl;
+	// 		//write on the file
+	// 		output_file << "Nearest neighbor : " <<"item_id"<< nn->id << " ";
+	// 		//cout << "CORDS SIZE -- > " << nn->coordinates.size() << endl;
+	// 		for (j = 0; j < d ; j++)
+	// 			output_file << nn->coordinates[j] << " ";
+	// 		output_file << endl;
+	// 		output_file << "distanceLSH : "<< min_dist << endl;
+	// 	}
+    //     cout << endl;
+    //     range.clear();
+	// 	c.clear();
+	// 	//break;
+    // }
+    //
+    // new_q_file.close();
 
 
 	//print items
@@ -255,7 +279,12 @@ int main(int argc,char* argv[]){
 	//	cout << endl;
 	//}
 
-	delete h;
+    if( metric == 0 ){
+        delete eu_h;
+    }
+    else{
+        delete co_h;
+    }
 
 
 	//destroy items

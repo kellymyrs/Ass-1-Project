@@ -1,7 +1,7 @@
 #include "Hashtable.h"
 
 Hashtable::Hashtable(int& k,int& d){
-	//cout << "Creating a hashtable !!!"<< endl;
+	cout << "Creating a hashtable !!!"<< endl;
 	g_h = new G(k,d);
 }
 
@@ -36,7 +36,7 @@ Hash_Member::~Hash_Member(){
 void Hashtable::Insert_Hashtable(struct Item<int>* it,uint32_t& t_size){
 
 	//cout << "Creating f function!" << endl;
-	int64_t f = g_h->g_f_function(it->coordinates,t_size); //calculate f
+	int64_t f = g_h->f_function(it->coordinates,t_size); //calculate f
 	//cout << "f number is :" << f << endl;
 
 
@@ -49,7 +49,7 @@ struct Item<int>* Hashtable::NN_Hashtable(vector<int>& c,uint32_t& t_size,double
 	double temp_dist;
 
 	//cout << endl << endl << "Searching Hashtable" << endl;
-	int64_t f = g_h->g_f_function(c,t_size); //calculate f
+	int64_t f = g_h->f_function(c,t_size); //calculate f
 	cout << "f = " << f << endl;
 	struct Item <int>* temp_item = NULL ,* min_item = NULL;
 
@@ -96,7 +96,7 @@ struct Item<int>* Hash_Member::Combine(vector<int>& c,G *g_h,double& temp_dist){
 
 	vector<int64_t> g_b,g_t;
 
-	g_m->Calculate_G(c,g_b); //calculate hash memeber G
+	g_m->Calculate_G(c,g_b); //calculate hash member G
 	g_h->Calculate_G(c,g_t); //calculate hashtable G
 
 	//combine hash member G and hashtable G
@@ -140,8 +140,8 @@ void Hashtable::Range_Hashtable(vector<int>& c,uint32_t& t_size,double& R,vector
 
 	//cout << endl << endl << "Searching Hashtable" << endl;
 
-	int64_t f = g_h->g_f_function(c,t_size); //calculate f
-	cout << "f = " << f << endl;
+	int64_t f = g_h->f_function(c,t_size); //calculate f
+	//cout << "f = " << f << endl;
 
 
 	//search bucket

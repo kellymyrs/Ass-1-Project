@@ -20,7 +20,7 @@ G::~G(){
 	//g.clear();
 }
 
-int64_t G::g_f_function(vector <int>& p,uint32_t& t_size){
+int64_t G::f_function(vector <int>& p,uint32_t& t_size){
 	//cout << "Calculating f!" << endl;
 
 	int64_t f = 0, h;
