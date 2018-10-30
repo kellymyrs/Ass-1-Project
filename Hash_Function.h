@@ -11,8 +11,9 @@
 #include <random>
 #include <cstdint>
 #include <time.h>
+#include <chrono>
 
-#define W 400
+#define W 300
 
 using namespace std;
 

@@ -13,7 +13,7 @@
 #include <time.h>
 #include "Hash_Function.h"
 
-#define W 400
+#define W 300
 
 using namespace std;
 

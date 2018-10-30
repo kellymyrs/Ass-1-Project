@@ -3,8 +3,9 @@
 Cosine_Hash_Function::Cosine_Hash_Function(int& d){
 	cout << "Creating a Cosine Hash function : "<< endl;
 
-    default_random_engine generator;
-	normal_distribution<double> distribution(0.0,1.0);
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine generator (seed);
+	std::normal_distribution<double> distribution(0.0, 1.0);
 
 	r.reserve(d);
 	for ( int i = 0 ; i < d ; i++){
@@ -21,17 +22,17 @@ Cosine_Hash_Function::~Cosine_Hash_Function(){
 
 //calculates h(p)
 int Cosine_Hash_Function::cosine_h_function(vector <int>& p){
-    int c = 0;
+    double c = 0;
 
     //cout << "Calculating h(p) !" << endl;
 	vector<double>::iterator itv = r.begin();
-	for (vector<int>::iterator it = p.begin(); it != p.end(); ++it){
-		//cout << "vi = " << *itv << endl;
+	for (vector<int>::iterator it = p.begin(); it != p.end(); it++){
+		//cout << "ri = " << *itv << endl;
 		//cout << "p = " << *it << endl;
-		c += *itv + *it;
-		++itv;
+		c += (*itv) * (*it);
+		itv++;
 	}
-
+	//cout << "H(P) = " << c << endl;
     if( c >= 0)
         return 1;
     else

@@ -25,13 +25,16 @@ uint32_t Cosine_G::Calculate_G(vector<int>& c){
 
 	vector<Cosine_Hash_Function*>::iterator it;
 	//cout << "Calculating Cosine G" << endl;
+	//cout << "H = " ;
 	for ( it = g.begin() ; it != g.end() ; ++it ){
 
 		h = (*it)->cosine_h_function(c);
+	//	cout << h << " " ;
 
         concat = (concat << 1) | h;
 
 	}
-
+	//cout << endl;
+	//cout << "CONCAT = "<< concat << endl;
     return concat;
 }

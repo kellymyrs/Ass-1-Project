@@ -15,7 +15,7 @@
 #include "G.h"
 #include "Item.h"
 
-#define W 400
+#define W 300
 
 using namespace std;
 

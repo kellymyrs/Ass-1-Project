@@ -12,8 +12,9 @@ Hash_Function::Hash_Function(int d){
 
 //creates the vector v for the hash function
 void Hash_Function::hash_function_v(int d){ 
-    default_random_engine generator;
-	normal_distribution<double> distribution(0.0,1.0);
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine generator (seed);
+	std::normal_distribution<double> distribution(0.0, 1.0);
 
 	v.reserve(d);
 	for ( int i = 0 ; i < d ; i++){

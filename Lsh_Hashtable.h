@@ -14,7 +14,7 @@
 #include <time.h>
 #include "Hashtable.h"
 
-#define W 400
+#define W 300
 
 using namespace std;
 
